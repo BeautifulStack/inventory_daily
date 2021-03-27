@@ -4,6 +4,7 @@
 
 int main() {
 
+    // main loop
     while (1){
 
         // get time in hour and minute

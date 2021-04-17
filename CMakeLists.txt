@@ -3,4 +3,4 @@ project(inventory_daily C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(inventory_daily main.c)
+add_executable(inventory_daily main.c libinv-d/daily_run.c libinv-d/daily_run.h)

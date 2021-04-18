@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include "write_file.h"
 
-int write_file(FILE* f, char* filename)
+int write_file(char* new_content, char* filename)
 {
 
     if(access(filename, F_OK) == 0 ) {

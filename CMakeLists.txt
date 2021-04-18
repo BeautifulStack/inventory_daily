@@ -3,5 +3,5 @@ project(inventory_daily C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(inventory_daily main.c libinv-d/daily_run.c libinv-d/daily_run.h libinv-d/http_request.c libinv-d/http_request.h libinv-d/write_file.c libinv-d/write_file.h)
+add_executable(inventory_daily main.c libinv-d/http_request.c libinv-d/http_request.h libinv-d/write_file.c libinv-d/write_file.h)
 target_link_libraries(inventory_daily curl)

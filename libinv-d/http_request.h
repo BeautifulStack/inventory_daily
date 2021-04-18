@@ -5,6 +5,7 @@
 #ifndef INVENTORY_DAILY_HTTP_REQUEST_H
 #define INVENTORY_DAILY_HTTP_REQUEST_H
 
-FILE* do_request(long id);
+char* do_request(long id);
+int check_output(char* result);
 
 #endif //INVENTORY_DAILY_HTTP_REQUEST_H

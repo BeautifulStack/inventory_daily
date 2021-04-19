@@ -36,8 +36,11 @@ int write_file(char* new_content, char* filename)
         buffer_final = malloc(sizeof(char) * (size+strlen(new_content)));
         strcpy(buffer_final, buffer);
 
-        // TODO: remove the first two lines
-        strcat(buffer_final, new_content);
+        char* tmp = strchr(new_content, '\n');
+        char* tmp2 = strchr(tmp+1, '\n');
+
+        strcat(buffer_final, "\n");
+        strcat(buffer_final, tmp2+1);
 
         f = fopen(filename, "w");
         fputs(buffer_final, f);
@@ -46,7 +49,7 @@ int write_file(char* new_content, char* filename)
         //printf("%s", buffer);
 
         free(buffer);
-        //free(buffer_final);
+        free(buffer_final);
 
     } else {
 

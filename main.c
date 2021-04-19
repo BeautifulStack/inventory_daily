@@ -44,18 +44,10 @@ int main(int argc, char** argv)
         exit(1);
     }
 
-    //result = do_request(id);
+    result = do_request(id);
     //check_output(result); // if result = "0", then it's free here then exit
 
     filename = get_filename(argv[1]);
-
-    FILE* f = fopen(filename, "r+");
-    fseek(f, 0,SEEK_END);
-    size = ftell(f);
-    fseek (f, 0, SEEK_SET);
-    result = malloc(sizeof(char) * size);
-    fread(result, 1, size, f);
-    fclose(f);
 
     write_file(result, filename); // Those 2 values are free here
 

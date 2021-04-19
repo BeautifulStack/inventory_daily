@@ -4,14 +4,15 @@
 #include <string.h>
 #include "libinv-d/http_request.h"
 #include "libinv-d/write_file.h"
+#include "libinv-d/upload_file.h"
 
-char* get_filename(char* name)
+char* get_filename(char* name, short bool)
 {
     char* filename = malloc(sizeof(char) * 16);
     time_t now = time(NULL);
     struct tm *tm_struct = localtime(&now);
 
-    int month = tm_struct->tm_mon;
+    int month = tm_struct->tm_mon+bool;
     int year = (tm_struct->tm_year+1900)%100;
 
     if (month < 10) {
@@ -30,10 +31,8 @@ int main(int argc, char** argv)
     char* result;
     char* filename;
 
-    unsigned long size;
-
-    if (argc < 2) {
-        fprintf( stderr, "No id warehouse provided !\n");
+    if (argc < 3) {
+        fprintf( stderr, "Not enough arguments !\n");
         exit(1);
     }
 
@@ -44,12 +43,20 @@ int main(int argc, char** argv)
         exit(1);
     }
 
-    result = do_request(id);
-    //check_output(result); // if result = "0", then it's free here then exit
+    if (strcmp(argv[2], "monthly") == 0) {
 
-    filename = get_filename(argv[1]);
+        filename = get_filename(argv[1], 0);
+        upload_file(filename, id);
+    } else if (strcmp(argv[2], "daily") == 0) {
 
-    write_file(result, filename); // Those 2 values are free here
+        filename = get_filename(argv[1], 1);
+        result = do_request(id);
+        check_output(result); // if result = "0", then it's free here then exit
+
+        write_file(result, filename); // Those 2 values are free here
+    }
+
+
 
     return 0;
 }

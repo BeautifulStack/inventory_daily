@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 #include <string.h>
 #include "libinv-d/http_request.h"
 #include "libinv-d/write_file.h"
@@ -31,6 +30,8 @@ int main(int argc, char** argv)
     char* result;
     char* filename;
 
+    unsigned long size;
+
     if (argc < 2) {
         fprintf( stderr, "No id warehouse provided !\n");
         exit(1);
@@ -38,15 +39,23 @@ int main(int argc, char** argv)
 
     id = strtol(argv[1], &ptr, 10);
 
-    if (strlen(ptr) != 5) {
+    if (strlen(ptr) != 5 || id == 0) {
         fprintf( stderr, "Not a valid warehouse name !\n");
         exit(1);
     }
 
-    result = do_request(id);
+    //result = do_request(id);
     //check_output(result); // if result = "0", then it's free here then exit
 
     filename = get_filename(argv[1]);
+
+    FILE* f = fopen(filename, "r+");
+    fseek(f, 0,SEEK_END);
+    size = ftell(f);
+    fseek (f, 0, SEEK_SET);
+    result = malloc(sizeof(char) * size);
+    fread(result, 1, size, f);
+    fclose(f);
 
     write_file(result, filename); // Those 2 values are free here
 

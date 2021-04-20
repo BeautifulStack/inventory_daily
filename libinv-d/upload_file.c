@@ -9,56 +9,44 @@
 #include <curl/easy.h>
 #include <sys/stat.h>
 
-size_t read_data (char *bufptr, size_t size, size_t nitems, void *userp)
-{
-    size_t read;
-    read = fread(bufptr, size, nitems, userp);
-    return read;
-}
-
-void upload_file(char* filename, const long id)
+void upload_file(char* filename)
 {
     CURL *curl;
     CURLcode res;
-    struct stat file_info;
-    double speed_upload, total_time;
-    FILE *fd;
 
-    char *url = "http://192.168.1.16/php-back/Inventory/%ld";
+    curl_mime *form = NULL;
+    curl_mimepart *field = NULL;
+    struct curl_slist *headerlist = NULL;
+    static const char buf[] = "Expect:";
 
-    fd = fopen(filename, "rb"); /* open file to upload */
-    if(!fd)
-    {
-        fprintf( stderr, "File not found !\n");
-        exit(1);
-    }
+    char* url = "http://192.168.1.16/php-back/Inventory/sendInventory";
+
+    curl_global_init(CURL_GLOBAL_ALL);
 
     curl = curl_easy_init();
     if(curl)
     {
+        /* Create the form */
+        form = curl_mime_init(curl);
+
+        /* Fill in the file upload field */
+        field = curl_mime_addpart(form);
+        curl_mime_name(field, "sendfile");
+        curl_mime_filedata(field, filename);
+
         /* upload to this place */
         curl_easy_setopt(curl, CURLOPT_URL, url);
 
-        /* tell it to "upload" to the URL */
-        curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-
-        curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_data);
-
-        /* set where to read from (on Windows you need to use READFUNCTION too) */
-        curl_easy_setopt(curl, CURLOPT_READDATA, fd);
-
-        /* enable verbose for easier tracing */
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+        curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
 
         res = curl_easy_perform(curl);
-
-        /* now extract transfer info */
-        curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD, &speed_upload);
-        curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &total_time);
-
-        printf("Speed: %.3f bytes/sec during %.3f seconds\n", speed_upload, total_time);
+        if(res != CURLE_OK)
+            fprintf(stderr, "curl_easy_perform() failed: %s\n",
+                    curl_easy_strerror(res));
 
         /* always cleanup */
         curl_easy_cleanup(curl);
+        /* then cleanup the form */
+        curl_mime_free(form);
     }
 }

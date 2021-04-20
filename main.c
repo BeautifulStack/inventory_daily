@@ -56,11 +56,8 @@ int main(int argc, char** argv)
         filename = get_filename(argv[1], 1);
         result = do_request(id);
         check_output(result); // if result = "0", then it's free here then exit
-
         write_file(result, filename); // Those 2 values are free here
     }
-
-
 
     return 0;
 }

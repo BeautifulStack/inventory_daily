@@ -4,6 +4,7 @@
 
 #include "upload_file.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <curl/curl.h>
 #include <curl/easy.h>
 
@@ -46,5 +47,7 @@ void upload_file(char* filename)
         curl_easy_cleanup(curl);
         /* then cleanup the form */
         curl_mime_free(form);
+
+        free(filename);
     }
 }

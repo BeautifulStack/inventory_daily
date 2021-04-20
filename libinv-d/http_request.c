@@ -78,6 +78,7 @@ int check_output(char* result)
 {
     if (result == NULL) {
         fprintf( stderr, "Failed to do request !\n");
+        free(result);
         exit(1);
     } else if (strcmp(result, "0") == 0) {
         printf("No import/export today !\n");
@@ -85,6 +86,7 @@ int check_output(char* result)
         exit(0);
     } else if (strcmp(result, "1") == 0) {
         fprintf( stderr, "Not a valid warehouse id !\n");
+        free(result);
         exit(1);
     }
 }

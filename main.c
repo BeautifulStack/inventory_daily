@@ -16,7 +16,11 @@ char* get_filename(char* name, short bool)
     int year = (tm_struct->tm_year+1900)%100;
 
     if (month < 10) {
-        sprintf(filename, "data/%s0%d%d.xml", name, month, year);
+        if (month == 0) {
+            sprintf(filename, "data/%s12%d.xml", name, year);
+        } else {
+            sprintf(filename, "data/%s0%d%d.xml", name, month, year);
+        }
     } else {
         sprintf(filename, "data/%s%d%d.xml", name, month, year);
     }

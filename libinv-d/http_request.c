@@ -40,7 +40,7 @@ char* do_request(const long id)
     curl = curl_easy_init();
     if (curl) {
 
-        sprintf(url, "http://192.168.1.16/php-back/Inventory/%ld", id);
+        sprintf(url, "https://octobyte.cloud/php-back-v2/Inventory/%ld", id);
 
         curl_easy_setopt(curl, CURLOPT_URL, url);
         //set network option, provide the URL to use in the request

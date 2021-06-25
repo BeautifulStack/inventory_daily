@@ -43,6 +43,8 @@ int write_file(char* new_content, char* filename)
         strcat(buffer_final, tmp2+1);
 
         f = fopen(filename, "w");
+        unsigned long last_index = strlen(buffer_final)-1;
+        buffer_final[last_index] = 0;
         fputs(buffer_final, f);
         fclose(f);
 
@@ -54,6 +56,8 @@ int write_file(char* new_content, char* filename)
     } else {
 
         FILE* f = fopen(filename, "w");
+        unsigned long last_index = strlen(new_content)-1;
+        new_content[last_index] = 0;
         fputs(new_content, f);
         fclose(f);
 

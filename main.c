@@ -49,7 +49,8 @@ int main(int argc, char** argv)
 
     if (strcmp(argv[2], "monthly") == 0) {
 
-        filename = get_filename(argv[1], 0);
+        filename = get_filename(argv[1], 1);
+        printf("%s", filename);
         upload_file(filename);
     } else if (strcmp(argv[2], "daily") == 0) {
 

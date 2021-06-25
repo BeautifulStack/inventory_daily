@@ -18,7 +18,7 @@ void upload_file(char* filename)
     struct curl_slist *headerlist = NULL;
     static const char buf[] = "Expect:";
 
-    char* url = "http://192.168.1.16/php-back/Inventory/sendInventory";
+    char* url = "https://octobyte.cloud/php-back-v2/Inventory/sendInventory";
 
     curl_global_init(CURL_GLOBAL_ALL);
 
